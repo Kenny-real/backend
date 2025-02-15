@@ -1,6 +1,13 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const cors = require('cors');
+app.use(cors({
+    origin: "https://jokestop-4cc4f.web.app",
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization"
+}));
+
 
 app.use(express.json()); // Permite que o servidor leia JSON
 app.use(cors()); // Permite que o frontend acesse o backend
