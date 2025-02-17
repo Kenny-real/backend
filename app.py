@@ -14,3 +14,16 @@ def register():
 
 if __name__ == "__main__":
     app.run(debug=True)
+from flask import Flask, request, jsonify
+from flask_cors import CORS  # Importa o CORS
+
+app = Flask(__name__)
+CORS(app)  # Habilita CORS para todas as rotas
+
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.json
+    return jsonify({"message": "Cadastro recebido com sucesso!"}), 200
+
+if __name__ == '__main__':
+    app.run(debug=True)
