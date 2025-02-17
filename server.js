@@ -1,19 +1,21 @@
-const express = require('express');
+const express = require("express");
+const cors = require("cors");
+const { Pool } = require("pg");
+
 const app = express();
-const cors = require('cors');
-const cors = require('cors');
+
+// Configurar o CORS para permitir apenas teu site na Firebase Hosting
 app.use(cors({
-    origin: "https://jokestop-4cc4f.web.app",
+    origin: "https://jokestop-4cc4f.web.app", // Permitir requisições apenas desse domínio
     methods: "GET,POST,PUT,DELETE",
-    allowedHeaders: "Content-Type,Authorization"
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true
 }));
 
+// Middleware para entender JSON
+app.use(express.json());
 
-app.use(express.json()); // Permite que o servidor leia JSON
-app.use(cors()); // Permite que o frontend acesse o backend
-
-// Conexão com banco de dados (Ajusta isso para o PostgreSQL da Railway)
-const { Pool } = require('pg');
+// Conexão com o PostgreSQL da Railway
 const pool = new Pool({
     connectionString: 'postgresql://postgres:PuQosmNGhHEtzPLKUGlAzsTxQYGpIzcc@junction.proxy.rlwy.net:30795/railway'
 });
@@ -31,15 +33,13 @@ app.post('/register', async (req, res) => {
 
         res.status(201).json({ message: 'Usuário cadastrado!', user: result.rows[0] });
     } catch (error) {
-        console.error(error);
+        console.error("Erro no cadastro:", error);
         res.status(500).json({ error: 'Erro ao cadastrar usuário' });
     }
 });
 
-// Iniciar o servidor
-const PORT = process.env.PORT || 3000;
+// Iniciar o servidor (apenas um)
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`✅ Servidor rodando na porta ${PORT}`);
 });
-
-
